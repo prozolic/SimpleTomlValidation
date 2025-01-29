@@ -1,0 +1,27 @@
+﻿@page "/"
+@inject IJSRuntime jsRuntime
+
+<div class="options">
+    <div>
+        <label>Enter text in TOML format. </label>
+    </div>
+    <div >
+        <label>Theme:</label>
+        <select class="form-select-sm" @onchange="ChangeTheme">
+            <option value="vs">Visual Studio</option>
+            <option value="vs-dark">Visual Studio Dark</option>
+            <option value="hc-black">High Contrast Black</option>
+        </select>
+    </div>
+</div>
+
+<div class="editor-area">
+    <StandaloneCodeEditor @ref="editor" Id="editor-id"
+                          ConstructionOptions="EditorConstructionOptions" />
+    <label class=@ValidationStatusStyle>@TomlStatus</label>
+</div>
+
+<div class="button-position">
+    <button class="fill-button mr-2" @onclick="OnClickValidate">Validate</button>
+    <button class="fill-button mr-2" @onclick="OnClickClear">Clear</button>
+</div>

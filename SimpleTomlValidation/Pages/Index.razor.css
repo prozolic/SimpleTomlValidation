@@ -1,0 +1,43 @@
+﻿
+.editor-area {
+    background: #eff0f3;
+    padding: 4px 0px 0px 0px;
+}
+
+.toml-valid {
+    color: #33272a;
+}
+
+.toml-invalid {
+    color: red;
+}
+
+.button-position {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.fill-button {
+    font-size: 18px;
+    box-sizing: border-box;
+    height: 38px;
+    background: #ff8e3c;
+    color: #33272a;
+    border: 1px solid transparent;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    min-width: 90px;
+    margin-right: 2px;
+    margin: 4px 4px 4px 0;
+    border-radius: .10rem;
+    padding: 0 16px;
+}
+
+    .fill-button:hover, .fill-button:focus, .fill-button:active {
+        background-color: #cc682d;
+        box-shadow: 1px 1px 1px rgba(0,0,0,0.4);
+    }
+

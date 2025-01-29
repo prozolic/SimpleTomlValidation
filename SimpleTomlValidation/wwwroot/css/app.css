@@ -1,5 +1,7 @@
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #eff0f3;
+    height: 90%;
 }
 
 h1:focus {
@@ -111,4 +113,45 @@ code {
 
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
     text-align: start;
+}
+
+.monaco-editor-container {
+    height: 500px;
+    border: 1px solid gray;
+    position: relative;
+    background: #f25f4c;
+}
+
+.decorationContentClass {
+    background: #f25f4c;
+}
+
+.decorationGlyphMarginClass {
+    background: #f25f4c;
+}
+
+.options {
+    display: flex;
+    padding: 5px;
+}
+
+    .options > div {
+        padding: 5px;
+    }
+
+        .options > div:last-of-type {
+            margin-left: auto;
+        }
+
+.theme {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-select-sm {
+    padding-top: .25rem;
+    padding-bottom: .25rem;
+    padding-left: .5rem;
+    font-size: 0.875rem;
+    border-radius: .10rem;
 }

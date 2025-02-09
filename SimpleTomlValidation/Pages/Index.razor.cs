@@ -74,7 +74,7 @@ role = ""backend""
         {
             isValid = false;
             var errorDecorations = new List<ModelDeltaDecoration>();
-            foreach (CsTomlLineNumberException e in ctse.Exceptions!)
+            foreach (var e in ctse.ParseExceptions!)
             {
                 errorDecorations.Add(new()
                 {

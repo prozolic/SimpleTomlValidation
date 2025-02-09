@@ -4,6 +4,8 @@ using CsToml;
 using CsToml.Error;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using SimpleTomlValidation.Utility;
+using System.Buffers;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
@@ -73,21 +75,29 @@ role = ""backend""
         catch (CsTomlSerializeException ctse)
         {
             isValid = false;
-            var errorDecorations = new List<ModelDeltaDecoration>();
-            foreach (var e in ctse.ParseExceptions!)
+
+            var errorDecorations = new ExtendableArray<ModelDeltaDecoration>(ctse.ParseExceptions!.Count);
+            try
             {
-                errorDecorations.Add(new()
+                foreach (var e in ctse.ParseExceptions!)
                 {
-                    Range = new BlazorMonaco.Range((int)e.LineNumber, 1, (int)e.LineNumber, 1),
-                    Options = new ModelDecorationOptions
+                    errorDecorations.Add(new()
                     {
-                        IsWholeLine = true,
-                        ClassName = "decorationContentClass",
-                        GlyphMarginClassName = "decorationGlyphMarginClass"
-                    }
-                });
+                        Range = new BlazorMonaco.Range((int)e.LineNumber, 1, (int)e.LineNumber, 1),
+                        Options = new ModelDecorationOptions
+                        {
+                            IsWholeLine = true,
+                            ClassName = "decorationContentClass",
+                            GlyphMarginClassName = "decorationGlyphMarginClass"
+                        }
+                    });
+                }
+                await editor.DeltaDecorations(null, errorDecorations.AsSpan().ToArray());
             }
-            await editor.DeltaDecorations(null, errorDecorations.ToArray());
+            finally
+            {
+                errorDecorations.Return();
+            }
         }
         catch (Exception e)
         {

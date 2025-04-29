@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <PackageReference Include="BlazorMonaco" Version="3.3.0" />
-    <PackageReference Include="CsToml" Version="1.5.3" />
+    <PackageReference Include="CsToml" Version="1.6.2" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.0" PrivateAssets="all" />
     <PackageReference Include="PublishSPAforGitHubPages.Build" Version="3.0.0" />

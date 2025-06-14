@@ -14,11 +14,21 @@
 
 <body>
     <div id="app">
-        <svg class="loading-progress">
-            <circle r="40%" cx="50%" cy="50%" />
-            <circle r="40%" cx="50%" cy="50%" />
-        </svg>
-        <div class="loading-progress-text"></div>
+        <div class="loading-container">
+            <div class="loading-card">
+                <div class="logo">📋</div>
+                <h1 class="app-title">TOML Validator</h1>
+                <p class="app-subtitle">Ready to validate your TOML files</p>
+                
+                <div class="loading-dots">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+                
+                <div class="status-text">Loading...</div>
+            </div>
+        </div>
     </div>
 
     <div id="blazor-error-ui">

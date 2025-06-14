@@ -4,18 +4,18 @@ main {
 }
 
 header {
-    line-height: 56px;
+    line-height: 44px;
     color: #fffffe;
     background-color: #eff0f3;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
 }
 
 .header-text {
-    line-height: 56px;
+    line-height: 44px;
     text-align: left;
     color: #33272a;
     background-color: #eff0f3;
-    font-size: 32px;
+    font-size: 20px;
     font-weight: bold;
 }
 
@@ -75,6 +75,10 @@ header {
 
     .top-row ::deep a, .top-row ::deep .btn-link {
         margin-left: 0;
+    }
+
+    .header-text {
+        font-size: 16px;
     }
 }
 

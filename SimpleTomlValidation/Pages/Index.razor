@@ -1,27 +1,154 @@
 ﻿@page "/"
 @inject IJSRuntime jsRuntime
 
-<div class="options">
-    <div>
-        <label>Enter text in TOML format. </label>
-    </div>
-    <div >
-        <label>Theme:</label>
-        <select class="form-select-sm" @onchange="ChangeTheme">
-            <option value="vs">Visual Studio</option>
-            <option value="vs-dark">Visual Studio Dark</option>
-            <option value="hc-black">High Contrast Black</option>
-        </select>
-    </div>
-</div>
+<section class="content-wrapper">
+    <section class="controls-section" aria-labelledby="controls-heading">
+        <h2 id="controls-heading" class="sr-only">Configuration Options</h2>
+        
+        <div class="control-group">
+            <label class="control-label" for="spec-select">TOML Specification:</label>
+            <select id="spec-select" class="form-select" @onchange="ChangeSpec" aria-describedby="spec-help">
+                <option value="v1.0.0">TOML v1.0.0 (Stable)</option>
+                <option value="v1.1.0">TOML v1.1.0 (Pre-release)</option>
+            </select>
+            <div id="spec-help" class="sr-only">Choose between stable TOML v1.0.0 or pre-release v1.1.0 with additional features</div>
+        </div>
+        
+        <div class="control-group">
+            <label class="control-label" for="theme-select">Editor Theme:</label>
+            <select id="theme-select" class="form-select" @onchange="ChangeTheme" aria-describedby="theme-help">
+                <option value="vs">Visual Studio Light</option>
+                <option value="vs-dark">Visual Studio Dark</option>
+                <option value="hc-black">High Contrast</option>
+            </select>
+            <div id="theme-help" class="sr-only">Select the visual theme for the code editor</div>
+        </div>
+    </section>
 
-<div class="editor-area">
-    <StandaloneCodeEditor @ref="editor" Id="editor-id"
-                          ConstructionOptions="EditorConstructionOptions" />
-    <label class=@ValidationStatusStyle>@TomlStatus</label>
-</div>
+    <section class="spec-features" 
+             style="@(selectedSpec == "v1.1.0" ? "display: block;" : "display: none;")" 
+             aria-labelledby="features-heading">
+        <div class="features-header">
+            <button class="features-toggle" 
+                    @onclick="ToggleFeaturesExpanded" 
+                    aria-expanded="@isFeaturesExpanded.ToString().ToLower()"
+                    aria-controls="features-content"
+                    type="button">
+                <span class="features-toggle-icon @(isFeaturesExpanded ? "expanded" : "collapsed")" 
+                      aria-hidden="true">▼</span>
+                <h3 id="features-heading" class="features-title">TOML v1.1.0 Features</h3>
+            </button>
+            <p class="features-description">Configure which pre-release features to enable</p>
+        </div>
+        
+        <div class="features-content @(isFeaturesExpanded ? "expanded" : "collapsed")" 
+             id="features-content" 
+             role="group" 
+             aria-labelledby="features-heading">
+            <div class="features-grid">
+                <div class="feature-item">
+                    <label class="feature-label" for="unicode-keys">
+                        <input id="unicode-keys" 
+                               type="checkbox" 
+                               class="feature-checkbox" 
+                               @bind="allowUnicodeInBareKeys" />
+                        <span class="feature-text">Unicode in bare keys</span>
+                    </label>
+                </div>
+                
+                <div class="feature-item">
+                    <label class="feature-label" for="newlines-tables">
+                        <input id="newlines-tables" 
+                               type="checkbox" 
+                               class="feature-checkbox" 
+                               @bind="allowNewlinesInInlineTables" />
+                        <span class="feature-text">Newlines in inline tables</span>
+                    </label>
+                </div>
+                
+                <div class="feature-item">
+                    <label class="feature-label" for="trailing-comma">
+                        <input id="trailing-comma" 
+                               type="checkbox" 
+                               class="feature-checkbox" 
+                               @bind="allowTrailingCommaInInlineTables" />
+                        <span class="feature-text">Trailing comma in inline tables</span>
+                    </label>
+                </div>
+                
+                <div class="feature-item">
+                    <label class="feature-label" for="seconds-omission">
+                        <input id="seconds-omission" 
+                               type="checkbox" 
+                               class="feature-checkbox" 
+                               @bind="allowSecondsOmissionInTime" />
+                        <span class="feature-text">Seconds omission in time</span>
+                    </label>
+                </div>
+                
+                <div class="feature-item">
+                    <label class="feature-label" for="escape-e">
+                        <input id="escape-e" 
+                               type="checkbox" 
+                               class="feature-checkbox" 
+                               @bind="supportsEscapeSequenceE" />
+                        <span class="feature-text">\e escape sequence</span>
+                    </label>
+                </div>
+                
+                <div class="feature-item">
+                    <label class="feature-label" for="escape-x">
+                        <input id="escape-x" 
+                               type="checkbox" 
+                               class="feature-checkbox" 
+                               @bind="supportsEscapeSequenceX" />
+                        <span class="feature-text">\x hexadecimal escape</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<div class="button-position">
-    <button class="fill-button mr-2" @onclick="OnClickValidate">Validate</button>
-    <button class="fill-button mr-2" @onclick="OnClickClear">Clear</button>
-</div>
+    <section class="editor-container" aria-labelledby="editor-heading">
+        <div class="editor-header">
+            <h3 id="editor-heading" class="editor-title">TOML Editor</h3>
+            <div class="status-indicator" 
+                 role="status" 
+                 aria-live="polite" 
+                 aria-label="Validation status">
+                <span class="@ValidationStatusStyle">@TomlStatus</span>
+            </div>
+        </div>
+        
+        <div class="editor-wrapper">
+            <StandaloneCodeEditor @ref="editor" 
+                                  Id="editor-id"
+                                  ConstructionOptions="EditorConstructionOptions" />
+        </div>
+    </section>
+
+    <div class="action-buttons" role="group" aria-label="TOML validation actions">
+        <button type="button" 
+                class="btn btn-primary" 
+                @onclick="OnClickValidate" 
+                aria-describedby="validate-help">
+            <span class="btn-icon" aria-hidden="true">✓</span>
+            Validate TOML
+        </button>
+        
+        <button type="button" 
+                class="btn btn-secondary" 
+                @onclick="OnClickClear" 
+                aria-describedby="clear-help">
+            <span class="btn-icon" aria-hidden="true">✗</span>
+            Clear Editor
+        </button>
+        
+        <div id="validate-help" class="sr-only">
+            Check the TOML syntax for errors and highlight issues in the editor
+        </div>
+        <div id="clear-help" class="sr-only">
+            Remove all content from the editor
+        </div>
+    </div>
+</section>

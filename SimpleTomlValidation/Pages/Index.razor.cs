@@ -3,9 +3,7 @@ using BlazorMonaco.Editor;
 using CsToml;
 using CsToml.Error;
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 using SimpleTomlValidation.Utility;
-using System.Buffers;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
@@ -17,6 +15,14 @@ public partial class Index
     private StandaloneCodeEditor editor;
 
     private bool isValid = true;
+    private string selectedSpec = "v1.0.0";
+    private bool allowUnicodeInBareKeys = false;
+    private bool allowNewlinesInInlineTables = false;
+    private bool allowTrailingCommaInInlineTables = false;
+    private bool allowSecondsOmissionInTime = false;
+    private bool supportsEscapeSequenceE = false;
+    private bool supportsEscapeSequenceX = false;
+    private bool isFeaturesExpanded = true;
 
     public string TomlStatus => isValid ? "This TOML text is normal." : "Error !";
 
@@ -62,15 +68,34 @@ role = ""backend""
         await Global.SetTheme(jsRuntime, e.Value?.ToString());
     }
 
+    private void ChangeSpec(ChangeEventArgs e)
+    {
+        selectedSpec = e.Value?.ToString() ?? "v1.0.0";
+    }
+
+    private void ToggleFeaturesExpanded()
+    {
+        isFeaturesExpanded = !isFeaturesExpanded;
+    }
+
     private async Task OnClickValidate()
     {
-        await editor.ResetDeltaDecorations();
-
         try
         {
+            await editor.ResetDeltaDecorations();
+            
             var utf16Value = await editor.GetValue();
-            var doc = CsTomlSerializer.Deserialize<TomlDocument>(Encoding.UTF8.GetBytes(utf16Value));
+            
+            var options = CreateSerializerOptions();
+            var doc = CsTomlSerializer.Deserialize<TomlDocument>(Encoding.UTF8.GetBytes(utf16Value), options);
+
             isValid = true;
+            StateHasChanged();
+        }
+        catch (OperationCanceledException)
+        {
+            // Validation was cancelled, do nothing
+            return;
         }
         catch (CsTomlSerializeException ctse)
         {
@@ -92,25 +117,49 @@ role = ""backend""
                         }
                     });
                 }
+
                 await editor.DeltaDecorations(null, errorDecorations.AsSpan().ToArray());
             }
             finally
             {
                 errorDecorations.Return();
             }
+
+            StateHasChanged();
         }
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
+            isValid = false;
+            StateHasChanged();
         }
-
-
     }
 
     private async Task OnClickClear()
     {
         isValid = true;
         await editor.SetValue(string.Empty);
+    }
+
+    private CsTomlSerializerOptions CreateSerializerOptions()
+    {
+        if (selectedSpec == "v1.0.0")
+        {
+            return CsTomlSerializerOptions.Default;
+        }
+
+        return CsTomlSerializerOptions.Default with
+        {
+            Spec = new()
+            {
+                AllowUnicodeInBareKeys = allowUnicodeInBareKeys,
+                AllowNewlinesInInlineTables = allowNewlinesInInlineTables,
+                AllowTrailingCommaInInlineTables = allowTrailingCommaInInlineTables,
+                AllowSecondsOmissionInTime = allowSecondsOmissionInTime,
+                SupportsEscapeSequenceE = supportsEscapeSequenceE,
+                SupportsEscapeSequenceX = supportsEscapeSequenceX
+            }
+        };
     }
 
 }

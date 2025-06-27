@@ -16,4 +16,5 @@ This project uses the following open-source libraries:
 | Library | Version | License | Description |
 |---------|---------|---------|-------------|
 | [CsToml](https://github.com/prozolic/CsToml) | v1.6.6 | MIT | TOML Parser/Serializer for .NET |
+| [CsToml.Extensions.Configuration](https://github.com/prozolic/CsToml) | v1.6.6 | MIT | Microsoft.Extensions.Configuration extensions using CsToml |
 | [BlazorMonaco](https://github.com/serdarciplak/BlazorMonaco) | v3.3.0 | MIT | Blazor component for Microsoft's Monaco Editor which powers Visual Studio Code. |

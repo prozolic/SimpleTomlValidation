@@ -302,6 +302,89 @@
     font-size: 16px;
 }
 
+/* File Input Section */
+.file-input-section {
+    margin-bottom: 12px;
+    padding: 12px;
+    background: #ffffff;
+    border: 2px solid #949494;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+}
+
+.file-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+}
+
+.file-input-styled {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: #0066cc;
+    color: #ffffff;
+    border: 2px solid #0066cc;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 160px;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 102, 204, 0.3);
+}
+
+.file-input-styled:hover {
+    background: #0052a3;
+    border-color: #0052a3;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.4);
+    transform: translateY(-1px);
+}
+
+.file-input-styled:focus {
+    outline: 3px solid #66b3ff;
+    outline-offset: 2px;
+}
+
+.file-input-styled::file-selector-button {
+    display: none;
+}
+
+.file-input-styled::before {
+    content: "📁 Load TOML File";
+}
+
+/* File Upload Error */
+.file-upload-error {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    padding: 12px 16px;
+    background: #ffeaea;
+    color: #b71c1c;
+    border: 2px solid #d32f2f;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(211, 47, 47, 0.1);
+}
+
+.error-icon {
+    font-size: 16px;
+    font-weight: bold;
+    color: #d32f2f;
+    flex-shrink: 0;
+}
+
+.error-message {
+    line-height: 1.4;
+}
+
 /* Action Buttons */
 .action-buttons {
     display: flex;
@@ -515,7 +598,8 @@
     }
 
     .controls-section,
-    .editor-container {
+    .editor-container,
+    .file-input-section {
         background: #2a2a2a;
         border-color: #666666;
     }
@@ -625,6 +709,16 @@
 
     .btn-secondary:focus {
         outline: 3px solid #b3b3b3;
+    }
+    
+    .file-upload-error {
+        background: #4d1a1a;
+        color: #ff6666;
+        border-color: #d32f2f;
+    }
+    
+    .error-icon {
+        color: #ff6666;
     }
 }
 

@@ -14,6 +14,7 @@
   <ItemGroup>
     <PackageReference Include="BlazorMonaco" Version="3.3.0" />
     <PackageReference Include="CsToml" Version="1.6.6" />
+    <PackageReference Include="CsToml.Extensions.Configuration" Version="1.6.6" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.5" PrivateAssets="all" />
     <PackageReference Include="PublishSPAforGitHubPages.Build" Version="3.0.0" />
@@ -21,6 +22,12 @@
 
   <ItemGroup>
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\appSettings.toml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

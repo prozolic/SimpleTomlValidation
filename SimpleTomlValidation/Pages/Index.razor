@@ -8,8 +8,17 @@
         <div class="control-group">
             <label class="control-label" for="spec-select">TOML Specification:</label>
             <select id="spec-select" class="form-select" @onchange="ChangeSpec" aria-describedby="spec-help">
-                <option value="v1.0.0">TOML v1.0.0 (Stable)</option>
-                <option value="v1.1.0">TOML v1.1.0 (Pre-release)</option>
+                @foreach (var spec in displayTomlSpec)
+                {
+                    if (@spec.value == defaultTomlSpec)
+                    {
+                        <option value=@spec.value selected>@spec.displayText</option>
+                    }
+                    else
+                    {
+                        <option value=@spec.value>@spec.displayText</option>
+                    }
+                }
             </select>
             <div id="spec-help" class="sr-only">Choose between stable TOML v1.0.0 or pre-release v1.1.0 with additional features</div>
         </div>
@@ -26,7 +35,7 @@
     </section>
 
     <section class="spec-features" 
-             style="@(selectedSpec == "v1.1.0" ? "display: block;" : "display: none;")" 
+             style="@(selectedSpec == "1.1.0" ? "display: block;" : "display: none;")" 
              aria-labelledby="features-heading">
         <div class="features-header">
             <button class="features-toggle" 
@@ -126,6 +135,26 @@
                                   ConstructionOptions="EditorConstructionOptions" />
         </div>
     </section>
+
+    <div class="file-input-section" role="group" aria-label="File operations">
+        <div class="file-input-wrapper">
+            <InputFile class="file-input-styled" 
+                       accept=".toml,.txt" 
+                       OnChange="OnFileInputChange"
+                       aria-describedby="file-help" />
+            <div id="file-help" class="sr-only">
+                Select a .toml or .txt file to load into the editor
+            </div>
+        </div>
+        
+        @if (!string.IsNullOrEmpty(fileUploadError))
+        {
+            <div class="file-upload-error" role="alert" aria-live="assertive">
+                <span class="error-icon" aria-hidden="true">⚠</span>
+                <span class="error-message">@fileUploadError</span>
+            </div>
+        }
+    </div>
 
     <div class="action-buttons" role="group" aria-label="TOML validation actions">
         <button type="button" 

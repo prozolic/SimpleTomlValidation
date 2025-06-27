@@ -3,6 +3,7 @@ using BlazorMonaco.Editor;
 using CsToml;
 using CsToml.Error;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using SimpleTomlValidation.Utility;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
@@ -14,8 +15,13 @@ public partial class Index
     [AllowNull]
     private StandaloneCodeEditor editor;
 
+    [Inject]
+    public IConfiguration? Configuration { get; set; }
+
+    private static readonly string MinimumVersion = "1.0.0";
+
     private bool isValid = true;
-    private string selectedSpec = "v1.0.0";
+    private string? selectedSpec;
     private bool allowUnicodeInBareKeys = false;
     private bool allowNewlinesInInlineTables = false;
     private bool allowTrailingCommaInInlineTables = false;
@@ -23,10 +29,23 @@ public partial class Index
     private bool supportsEscapeSequenceE = false;
     private bool supportsEscapeSequenceX = false;
     private bool isFeaturesExpanded = true;
+    private string? fileUploadError = null;
+    private string? defaultTomlSpec;
+    private (string value, string displayText)[] displayTomlSpec = [
+        ("1.0.0", "TOML v1.0.0 (Stable)"),
+        ("1.1.0", "TOML v1.1.0 (Pre-release)")];
 
     public string TomlStatus => isValid ? "This TOML text is normal." : "Error !";
 
     public string ValidationStatusStyle => isValid ? "toml-valid" : "toml-invalid";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        defaultTomlSpec = Configuration?["defaultTomlVersion"] ?? MinimumVersion;
+        selectedSpec = defaultTomlSpec;
+    }
 
     private static StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
     {
@@ -70,7 +89,7 @@ role = ""backend""
 
     private void ChangeSpec(ChangeEventArgs e)
     {
-        selectedSpec = e.Value?.ToString() ?? "v1.0.0";
+        selectedSpec = e.Value?.ToString() ?? MinimumVersion;
     }
 
     private void ToggleFeaturesExpanded()
@@ -141,9 +160,40 @@ role = ""backend""
         await editor.SetValue(string.Empty);
     }
 
+    private async Task OnFileInputChange(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        
+        if (file.Size > 1024 * 1024) // 1MB limit
+        {
+            fileUploadError = "File size exceeds 1MB limit.";
+            StateHasChanged();
+            return;
+        }
+        
+        // Clear any previous error
+        fileUploadError = null;
+
+        try
+        {
+            using var stream = file.OpenReadStream(maxAllowedSize: 1024 * 1024);
+            using var reader = new StreamReader(stream);
+            var content = await reader.ReadToEndAsync();
+            
+            await editor.SetValue(content);
+            isValid = true;
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            fileUploadError = $"File read error: {ex.Message}";
+            StateHasChanged();
+        }
+    }
+
     private CsTomlSerializerOptions CreateSerializerOptions()
     {
-        if (selectedSpec == "v1.0.0")
+        if (selectedSpec == MinimumVersion)
         {
             return CsTomlSerializerOptions.Default;
         }

@@ -8,9 +8,15 @@ wwwroot/js/lib/* linguist-vendored
 node_modules/* linguist-vendored
 
 # exclude html
-*.html linguist-detectable=false
+*.html linguist-vendored
 
 *.cs linguist-detectable=true
+*.csproj linguist-detectable=true
 *.razor linguist-detectable=true
 
 *.cs linguist-language=C#
+
+
+# document
+README.md linguist-documentation
+LICENSE linguist-documentation

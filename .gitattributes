@@ -1,13 +1,13 @@
 # exclude css
 *.css linguist-vendored
-wwwroot/lib/* linguist-vendored
-wwwroot/css/bootstrap* linguist-vendored
+SimpleTomlValidatio/wwwroot/lib/* linguist-vendored
+SimpleTomlValidatio/wwwroot/css/bootstrap* linguist-vendored
 
 # exclude javascript
-wwwroot/js/lib/* linguist-vendored
-node_modules/* linguist-vendored
+SimpleTomlValidatio/wwwroot/js/lib/* linguist-vendored
 
 # exclude html
+SimpleTomlValidatio/wwwroot/* linguist-vendored
 *.html linguist-vendored
 
 *.cs linguist-detectable=true
@@ -15,7 +15,6 @@ node_modules/* linguist-vendored
 *.razor linguist-detectable=true
 
 *.cs linguist-language=C#
-
 
 # document
 README.md linguist-documentation

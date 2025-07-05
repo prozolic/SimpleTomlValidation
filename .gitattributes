@@ -7,5 +7,8 @@ wwwroot/css/bootstrap* linguist-vendored
 wwwroot/js/lib/* linguist-vendored
 node_modules/* linguist-vendored
 
+# exclude html
+*.html linguist-detectable=false
+
 *.cs linguist-detectable=true
 *.razor linguist-detectable=true

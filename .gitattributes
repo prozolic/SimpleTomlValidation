@@ -1,0 +1,11 @@
+# exclude css
+*.css linguist-vendored
+wwwroot/lib/* linguist-vendored
+wwwroot/css/bootstrap* linguist-vendored
+
+# exclude javascript
+wwwroot/js/lib/* linguist-vendored
+node_modules/* linguist-vendored
+
+*.cs linguist-detectable=true
+*.razor linguist-detectable=true

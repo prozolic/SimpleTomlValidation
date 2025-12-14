@@ -21,7 +21,7 @@ jobs:
         with:
           dotnet-version: 9.0.x
       - name: Install .NET WebAssembly Tools
-        run: dotnet workload install wasm-tools
+        run: dotnet workload install wasm-tools-net9
 
       # Publish the site
       - name: Publish
@@ -33,4 +33,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: publish/wwwroot
+
           force_orphan: true

@@ -20,9 +20,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BlazorMonaco" Version="3.3.0" />
-    <PackageReference Include="CsToml" Version="1.7.2" />
-    <PackageReference Include="CsToml.Extensions.Configuration" Version="1.7.2" />
+    <PackageReference Include="BlazorMonaco" Version="3.4.0" />
+    <PackageReference Include="CsToml" Version="1.8.0" />
+    <PackageReference Include="CsToml.Extensions.Configuration" Version="1.8.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.5" PrivateAssets="all" />
     <PackageReference Include="PublishSPAforGitHubPages.Build" Version="3.0.3" />

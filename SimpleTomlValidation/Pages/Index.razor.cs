@@ -32,8 +32,8 @@ public partial class Index
     private string? fileUploadError = null;
     private string? defaultTomlSpec;
     private (string value, string displayText)[] displayTomlSpec = [
-        ("1.0.0", "TOML v1.0.0 (Stable)"),
-        ("1.1.0", "TOML v1.1.0 (Pre-release)")];
+        ("1.0.0", "TOML v1.0.0 ( Default )"),
+        ("1.1.0", "TOML v1.1.0")];
 
     public string TomlStatus => isValid ? "This TOML text is normal." : "Error !";
 
@@ -90,6 +90,26 @@ role = ""backend""
     private void ChangeSpec(ChangeEventArgs e)
     {
         selectedSpec = e.Value?.ToString() ?? MinimumVersion;
+
+        TomlSpec? tomlSpec = null;
+        switch (selectedSpec)
+        {
+            case "1.0.0":
+                tomlSpec = CsTomlSerializerOptions.Default.Spec; // v1.0.0
+                break;
+            case "1.1.0":
+                tomlSpec = TomlSpec.Version110;
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+        
+        allowUnicodeInBareKeys = tomlSpec.AllowUnicodeInBareKeys;
+        allowSecondsOmissionInTime = tomlSpec.AllowSecondsOmissionInTime;
+        allowTrailingCommaInInlineTables = tomlSpec.AllowTrailingCommaInInlineTables;
+        allowNewlinesInInlineTables = tomlSpec.AllowNewlinesInInlineTables;
+        supportsEscapeSequenceE = tomlSpec.SupportsEscapeSequenceE;
+        supportsEscapeSequenceX = tomlSpec.SupportsEscapeSequenceX;
     }
 
     private void ToggleFeaturesExpanded()

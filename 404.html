@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SimpleTomlValidation</title>
+    <base href="/SimpleTomlValidation/" />
+    <link rel="stylesheet" href="css/app.css" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link href="SimpleTomlValidation.styles.css" rel="stylesheet" />
+    <link href="manifest.webmanifest" rel="manifest" />
+</head>
+
+<body>
+    <div id="app">
+        <div class="loading-container">
+            <div class="loading-card">
+                <div class="logo">📋</div>
+                <h1 class="app-title">TOML Validator</h1>
+                <p class="app-subtitle">Ready to validate your TOML files</p>
+                
+                <div class="loading-dots">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+                
+                <div class="status-text">Loading...</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="." class="reload">Reload</a>
+        <span class="dismiss">🗙</span>
+    </div>
+
+    <script src="_content/BlazorMonaco/jsInterop.js"></script>
+    <script src="_content/BlazorMonaco/lib/monaco-editor/min/vs/loader.js"></script>
+    <script src="_content/BlazorMonaco/lib/monaco-editor/min/vs/editor/editor.main.js"></script>
+    <script src="_framework/blazor.webassembly.js" autostart="false"></script>
+    <script>navigator.serviceWorker.register('service-worker.js');</script>
+    <script src="brotliloader.min.js" type="module"></script>
+</body>
+
+</html>

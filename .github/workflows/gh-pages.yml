@@ -21,7 +21,7 @@ jobs:
         with:
           dotnet-version: 10.0.x
       - name: Install .NET WebAssembly Tools
-        run: dotnet workload install wasm-tools-net10
+        run: dotnet workload install wasm-tools
 
       # Publish the site
       - name: Publish
